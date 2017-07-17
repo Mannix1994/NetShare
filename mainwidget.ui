@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWidget</class>
+ <widget class="QWidget" name="MainWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>293</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLineEdit" name="leSearch">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>250</y>
+     <width>171</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>搜索 服务器IP/ID</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbIDManager">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>管理自己的ID</string>
+   </property>
+   <property name="text">
+    <string>ID管理</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbRefresh">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>250</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>搜索所有主机</string>
+   </property>
+   <property name="text">
+    <string>发现</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbServerManager">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>管理服务器</string>
+   </property>
+   <property name="text">
+    <string>服务器管理</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbAliasManager">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>共享目录</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tvServerTable">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>70</y>
+     <width>361</width>
+     <height>171</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbSearch">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>250</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>搜索指定主机</string>
+   </property>
+   <property name="text">
+    <string>搜索</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbDownloadManager">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>下载管理</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbHelp">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>250</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>使用帮助</string>
+   </property>
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

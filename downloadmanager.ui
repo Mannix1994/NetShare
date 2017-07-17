@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DownloadManager</class>
+ <widget class="QWidget" name="DownloadManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>603</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="lbTip">
+   <property name="geometry">
+    <rect>
+     <x>51</x>
+     <y>81</y>
+     <width>60</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>正在下载：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbDownloading">
+   <property name="geometry">
+    <rect>
+     <x>111</x>
+     <y>81</y>
+     <width>431</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QProgressBar" name="pbPercent">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>110</y>
+     <width>371</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>0</number>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="teList">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>140</y>
+     <width>501</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>待下载文件</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="placeholderText">
+    <string>待下载文件列表</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>52</x>
+     <y>40</y>
+     <width>501</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout111">
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="leDirectory">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string>下载目录</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="lbDirectory">
+      <property name="text">
+       <string>下载目录：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="pbDirectory">
+      <property name="text">
+       <string>浏览...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pbOpen">
+      <property name="text">
+       <string>打开文件夹</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pbStop">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>110</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>停止下载当前文件</string>
+   </property>
+   <property name="text">
+    <string>停止</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>240</y>
+     <width>501</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_222">
+    <item row="0" column="0">
+     <widget class="QLineEdit" name="leLink">
+      <property name="placeholderText">
+       <string>在这里粘帖链接，然后点击浏览目录</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="pbDownload">
+      <property name="toolTip">
+       <string>浏览目录</string>
+      </property>
+      <property name="text">
+       <string>浏览目录</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pbStopAll">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>110</y>
+     <width>71</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>取消下载所有未下载文件</string>
+   </property>
+   <property name="text">
+    <string>取消所有</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

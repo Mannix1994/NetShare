@@ -1,0 +1,19 @@
+１、首先安装Ubnutu服务器
+sudo apt-get install apache2
+２、重启服务器
+sudo /etc/init.d/apache2 restart
+３、修改Apache服务器监听端口
+sudo vim /etc/apache2/ports.conf　
+将Listen 80改为Listen 886
+３、修改配置文件
+sudo vim etc/apache2/mods-enabled/alias.conf
+在</IfModule>之前加入一行Include "/etc/apache2/mods-enabled/mAlias.conf"
+4、将源代码文件夹\Res中的mAlias.conf复制到/etc/apache2/mods-enabled/
+
+	Alias /other/ "/usr/share/apache2/icons/"
+
+	<Directory "/usr/share/apache2/icons">
+		Options FollowSymlinks
+		AllowOverride None
+		Require all granted
+	</Directory>
