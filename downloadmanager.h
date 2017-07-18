@@ -64,7 +64,7 @@ private:
     void download();
     void updateUndownloadList();
 signals:
-    startDownloaded(QString url,bool isDownloading);
+    void startDownloaded(QString url,bool isDownloading);
 };
 
 #endif // DOWNLOADMANAGER_H

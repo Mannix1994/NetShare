@@ -1,4 +1,4 @@
-#define LOG //是否将调试日志记录到文件
+//#define LOG //是否将调试日志记录到文件
 
 #include "mainwidget.h"
 #include <QApplication>
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
        return 0;
     }
     else if(argc == 2){ //如果有参数uninstall，则执行ApplicationManager::uninstallService();
-        mLog(argv[1]);
+        mDebug(argv[1]);
         if(qstrcmp(argv[1],"uninstall") == 0){
             ApplicationManager::uninstallService();
             return 0;

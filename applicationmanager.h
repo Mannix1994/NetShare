@@ -10,6 +10,7 @@
 #include <QProcess>
 #include <QTextCodec>
 #include <QTime>
+#include <QStandardPaths>
 
 #define WINDOWS //代表Windows平台
 #define DEBUG //调试模式
@@ -30,7 +31,7 @@ class ApplicationManager : public QObject
 public:
     explicit ApplicationManager(QObject *parent = 0);
     static void init(); //第一次运行时运行此函数，完成http.conf和conf.ini的设置，安装Apache服务
-    static void log(QString mlog); //写日志
+    static void log(QString mDebug); //写日志
     static void uninstallService(); //卸载Apache服务
 
 private:

@@ -18,8 +18,10 @@ Base::~Base()
  */
 void Base::configWindow()
 {
+    QDesktopWidget *desktop = QApplication::desktop();
+    move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
 //    QPixmap icon  = style()->standardPixmap(QStyle::SP_DriveNetIcon);
-    //this->setWindowIcon(QIcon(":/Icon/48.ico"));
+    this->setWindowIcon(QIcon(":/Icon/48.ico"));
     this->setWindowModality(Qt::ApplicationModal);
     this->setWindowTitle("网络共享");
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -34,7 +36,7 @@ void Base::configWindow()
     this->setFixedSize(width,height);
 
     //设置背景
-    QString picpath = (QDir::currentPath()+"/bg.jpg");
+    QString picpath = QDir::currentPath()+"/bg.jpg";
     QString picpath2 = QDir::currentPath()+"/bg.jpeg";
     QPixmap pixma(picpath);
     if(pixma.isNull())
@@ -65,7 +67,7 @@ void Base::configWindow()
     minButton->setToolTip(tr("最小化"));
     closeButton->setToolTip(tr("关闭"));
     //设置最小化、关闭按钮的样式
-#ifdef WINDOWS
+#ifdef Q_OS_WIN32
     minButton->setStyleSheet("background-color:transparent;");
     closeButton->setStyleSheet("background-color:transparent;");
 #endif
@@ -73,6 +75,18 @@ void Base::configWindow()
     connect(minButton, SIGNAL(clicked()), this, SLOT(slot_minWindow()));
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
+}
+/**
+ * @brief Base::initialize
+ */
+void Base::initialize(){
+#ifdef Q_OS_WIN32
+    confPath = "conf.ini";
+#elif defined(Q_OS_LINUX)
+    QString ppath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    confPath = ppath+"/Netshare/conf.ini";
+#endif
+    configIni = new QSettings(confPath, QSettings::IniFormat);
 }
 
 /**

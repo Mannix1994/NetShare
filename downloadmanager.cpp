@@ -17,11 +17,11 @@ DownloadManager::~DownloadManager()
 }
 
 void DownloadManager::initialize(){
+    Base::initialize();
     setWindowTitle("下载管理");
     ui->pbStop->setEnabled(false);
     ui->pbStopAll->setEnabled(false);
     //读取下载目录
-    configIni = new QSettings("conf.ini", QSettings::IniFormat);
     ui->leDirectory->setText(configIni->value("DownloadManager/directory",
                                               QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first()).toString());
     connect(accessManager,SIGNAL(finished(QNetworkReply*)),this,SLOT(addDownloadTask(QNetworkReply*)));
@@ -93,8 +93,9 @@ void DownloadManager::download()
         QString directory = ui->leDirectory->text()+waittoDownload.first().path;
         QDir dir;
         if(!dir.exists(directory))
-            dir.mkdir(directory);
+            dir.mkpath(directory);
         QString filepath = directory+filename;
+        mDebug(directory);
         if(QFile::exists(filepath))
         {
             bool tag = question("提示","该文件已存在，是否继续下载？\n(下载的文件将被重命名)");
@@ -121,8 +122,8 @@ void DownloadManager::download()
             }
         }
         file = new QFile(filepath);
-        if(!file->open(QIODevice::ReadWrite | QIODevice::Truncate)){
-            mLog("写入文件失败:"+file->errorString());
+        if(!file->open(QIODevice::WriteOnly)){
+            mDebug("写入文件失败:"+file->errorString());
             isDownloading = false;
             return;
         }
@@ -156,7 +157,7 @@ void DownloadManager::downloadFinished(){ //下载完成
     }
     else{
         ui->lbDownloading->setText("有错误发生");
-        mLog(reply->errorString());
+        mDebug(reply->errorString());
         showWarning("提示","有错误发生!\n"+reply->errorString());
     }
     if(waittoDownload.count()>0){ //如果还有未下载任务，则开始下载
@@ -235,10 +236,10 @@ void DownloadManager::on_pbOpen_clicked()
 {
     QString path = ui->leDirectory->text();
     if(!path.isEmpty()){
-#ifdef WINDOWS
+#ifdef Q_OS_WIN32
         QProcess::startDetached("explorer.exe",QStringList()<<path.replace("/","\\"));
-#else
-        QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
+#elif defined(Q_OS_LINUX)
+       QProcess::startDetached("nautilus",QStringList()<<path);
 #endif
     }
     else
@@ -254,7 +255,7 @@ void DownloadManager::on_pbDownload_clicked()
     ui->leLink->clear();
     if(!mUrl.isEmpty()){
         DirectoryBroswer *b = new DirectoryBroswer(mUrl);
-        connect(b,SIGNAL(newTask(QString)),this,SLOT(addTask(QString)));
+        connect(b,SIGNAL(newTask(QString,bool)),this,SLOT(addTask(QString,bool)));
         b->show();
         this->close();
     }
@@ -303,7 +304,7 @@ void DownloadManager::addDownloadTask(QNetworkReply *re){
     }
     else{
         showWarning("提示","连接错误："+rep->errorString());
-        mLog(rep->errorString());
+        mDebug(rep->errorString());
     }
 }
 /**

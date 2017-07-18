@@ -10,35 +10,38 @@ ApplicationManager::ApplicationManager(QObject *parent) : QObject(parent)
  */
 void ApplicationManager::init()
 {
-#ifdef WINDOWS
-    //新建配置文件conf.ini
-    QSettings *config = new QSettings("conf.ini", QSettings::IniFormat);
-    QString path = QDir::currentPath()+"/Apache24";
-#ifdef DEBUG
-    mLog(path);
+#ifdef Q_OS_WIN32
+    QString confPath = "conf.ini";
+    QString serverPath = QDir::currentPath()+"/Apache24";
+#elif defined(Q_OS_LINUX)
+    QString ppath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    QString confPath = ppath + "/Netshare/conf.ini";
+    QString serverPath = "/etc/init.d/";
 #endif
+    //新建配置文件conf.ini
+    QSettings *config = new QSettings(confPath, QSettings::IniFormat);
     config->setValue("MainWidget/first",false);
-    config->setValue("ServerManager/directory",path);
+    config->setValue("ServerManager/directory",serverPath);
     config->setValue("ServerManager/searchable",true);
     config->setValue("ServerManager/discoverable",true);
     qsrand(QTime(0,0,0).msecsTo(QTime::currentTime()));
     uint id = 100000 + qrand()%10000000;
     config->setValue("IDManager/id",QString::number(id));
-
+#ifdef Q_OS_WIN32
     //修改配置文件httpd.conf
     QString backuppath = path+"/conf/httpd_backup.conf";
     QString httpdconfPath = path+"/conf/httpd.conf";
-    mLog(backuppath);
+    mDebug(backuppath);
     if(QFile::exists(backuppath)){
         QFile file(httpdconfPath),backup(backuppath);
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
             file.close();
-            mLog("写入配置文件失败");
+            mDebug("写入配置文件失败");
             return;
         }
         if(!backup.open(QIODevice::ReadOnly | QIODevice::Text)){
             backup.close();
-            mLog("打开原配置文件失败");
+            mDebug("打开原配置文件失败");
             return;
         }
         QTextStream in(&backup);
@@ -50,7 +53,7 @@ void ApplicationManager::init()
             text = in.readLine()+"\n";
             if(text.contains("Define SRVROOT")){ //只修改"Define SRVROOT"一行
                 text = "Define SRVROOT \""+path+"\"\n";
-                mLog(text);
+                mDebug(text);
             }
             out<<text;
         }
@@ -61,19 +64,27 @@ void ApplicationManager::init()
         installService();
     }
     else{
-        mLog("原配置文件不存在");
+        mDebug("原配置文件不存在");
     }
-    delete config;
+#elif defined(Q_OS_LINUX)
+
 #endif
+    delete config;
 }
 /**
  * @brief ApplicationManager::log 记录日志。
- * @param mlog 需要记录的信息
+ * @param mDebug 需要记录的信息
  */
-void ApplicationManager::log(QString mlog){
+void ApplicationManager::log(QString mDebug){
 
-#ifdef WINDOWS
+#ifdef Q_OS_WIN32
     QString path = QDir::currentPath()+"/debug.log";
+    const char *code = "GBK";
+#elif defined(Q_OS_LINUX)
+    QString ppath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+    QString path = ppath + "/NetShare/debug.log";
+    const char *code = "UTF-8";
+#endif
     QFile file(path);
     if(!file.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append)){
         file.close();
@@ -81,19 +92,18 @@ void ApplicationManager::log(QString mlog){
     }
     else{
         QTextStream out(&file);
-        out.setCodec("GBK");
-        out<<mlog<<"\n";
+        out.setCodec(code);
+        out<<mDebug<<"\n";
         out.flush();
     }
     file.close();
-#endif
 }
 
 /**
  * @brief ApplicationManager::installService 安装Apache服务
  */
 void ApplicationManager::installService(){
-#ifdef WINDOWS
+#ifdef Q_OS_WIN32
     QProcess *p = new QProcess();
     QString path = QDir::currentPath()+"/Apache24/bin/httpd.exe";
     if(QFile::exists(path)){
@@ -102,7 +112,7 @@ void ApplicationManager::installService(){
         QByteArray bytes = p->readAll();
         QTextCodec *gbk = QTextCodec::codecForName("gb2312");
         QString data = gbk->toUnicode(bytes);
-        mLog(data);
+        mDebug(data);
     }
     delete p;
 #endif
@@ -112,7 +122,7 @@ void ApplicationManager::installService(){
  * @brief ApplicationManager::uninstallService 卸载Apache服务
  */
 void ApplicationManager::uninstallService(){
-#ifdef WINDOWS
+#ifdef Q_OS_WIN32
     QProcess *p = new QProcess();
     QString path = QDir::currentPath()+"/Apache24/bin/httpd.exe";
     if(QFile::exists(path)){
@@ -123,7 +133,7 @@ void ApplicationManager::uninstallService(){
         QByteArray bytes = p->readAll();
         QTextCodec *gbk = QTextCodec::codecForName("gb2312");
         QString data = gbk->toUnicode(bytes);
-        mLog(data);
+        mDebug(data);
     }
     delete p;
 #endif

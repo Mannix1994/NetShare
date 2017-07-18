@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QTextCodec>
+#include <QTcpSocket>
 
 namespace Ui {
 class ServerManager;
@@ -14,7 +15,7 @@ class ServerManager : public Base
 {
     Q_OBJECT
 
-typedef enum Mode{Server,Silent,Check} Mode;
+typedef enum Mode{Start,Restart,Stop,Silent} Mode;
 
 public:
     explicit ServerManager(Base *parent = 0);
@@ -41,9 +42,9 @@ private:
     Ui::ServerManager *ui;
     QProcess *server;
     //bool checkMode; //是否处于检测模式
-    Mode mode;//分别对应服务器控制模式、静默检测模式、显式检测模式
     void initialize();
-    void execute(Mode m, QStringList args);
+    void execute(Mode mode,QStringList args);
+    bool isHostAccessible(QString host);
 
 signals:
     void serverStarted();

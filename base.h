@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QException>
+#include <QDesktopWidget>
 #include "applicationmanager.h"
 
 namespace Ui {
@@ -24,6 +25,7 @@ public:
     explicit Base(QWidget *parent = 0);
     QPoint last; //窗口最后的坐标
     QSettings *configIni; //配置文件读写指针
+    QString confPath; //configration file path
     enum Action{ButtonYes,ButtonNo,ButtonClose};
     QToolButton *minButton; //最小化按钮
     QToolButton *closeButton; //关闭按钮
@@ -33,7 +35,7 @@ public:
     static void showError(QString title, QString tip);
     virtual bool question(QString title, QString content);
     virtual Action question(QString buttonYesText, QString buttonNoText, QString title, QString content);
-    virtual void initialize()=0;
+    virtual void initialize();
     ~Base();
 
 private:

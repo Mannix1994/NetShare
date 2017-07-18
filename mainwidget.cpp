@@ -24,8 +24,7 @@ void MainWidget::configWindow(){
 
 void MainWidget::initialize()
 {
-
-    configIni = new QSettings("conf.ini", QSettings::IniFormat);
+    Base::initialize();
     bool firstTime = configIni->value("MainWidget/first",true).toBool();
     if(firstTime){
         ApplicationManager::init(); //初次运行，进行一些配置
@@ -56,7 +55,10 @@ void MainWidget::initialize()
     model->setHeaderData(3,Qt::Horizontal,"操作");
 
     ui->tvServerTable->setModel(model);
-    ui->tvServerTable->setColumnWidth(3,40);
+    ui->tvServerTable->setColumnWidth(0,120);
+    ui->tvServerTable->setColumnWidth(1,80);
+    ui->tvServerTable->setColumnWidth(2,80);
+    ui->tvServerTable->setColumnWidth(3,30);
     ui->tvServerTable->setStyleSheet("color:black");
     ui->tvServerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tvServerTable->horizontalHeader()->setStretchLastSection(true);
@@ -90,8 +92,8 @@ void MainWidget::on_pbAliasManager_clicked()
 /**
  * @brief MainWidget::readPendingDatagrams 根据收到的信息，更新在线服务器列表；发送自己的ID和别名列表
  */
-void MainWidget::readPendingDatagrams(){
-
+void MainWidget::readPendingDatagrams()
+{
     while(udpSocket->hasPendingDatagrams())
     {
         QByteArray bytes;
@@ -100,7 +102,7 @@ void MainWidget::readPendingDatagrams(){
         quint16 senderPort;
         udpSocket->readDatagram(bytes.data(),bytes.size(),&sender,&senderPort);
         QString str = QString::fromUtf8(bytes);
-
+        mDebug(str);
         QHostAddress host(QHostAddress(sender.toIPv4Address()));
         QStringList list = str.split(":");
         if(list.count() == 0){

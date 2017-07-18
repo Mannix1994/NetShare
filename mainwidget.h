@@ -22,6 +22,7 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QMap>
+#include <QDesktopWidget>
 
 namespace Ui {
 class MainWidget;

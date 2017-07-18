@@ -13,6 +13,7 @@ AliasManager::AliasManager(Base *parent) :
  * @brief AliasManager::initialize 一些初始化操作
  */
 void AliasManager::initialize(){
+    Base::initialize();
     setWindowTitle("映射管理");
     //初始化表格
     model = new QStandardItemModel();
@@ -67,11 +68,14 @@ void AliasManager::on_pbChooseDirectory_clicked()
  */
 void AliasManager::getAlias(QAlias *aliases)
 {
-    QSettings *config = new QSettings("conf.ini", QSettings::IniFormat);
-    QString filePath = config->value("ServerManager/directory","").toString()+"/conf/alias.conf";
+#ifdef Q_OS_WIN32
+    QString filePath = configIni->value("ServerManager/directory","").toString()+"/conf/alias.conf";
+#elif defined(Q_OS_LINUX)
+    QString filePath = "/etc/apache2/mods-enabled/mAlias.conf";
+#endif
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        showTip("警告","打开文件失败");
+        showTip("警告","打开Alias文件失败");
     }
     else{
         QTextStream in(&file);
@@ -96,7 +100,6 @@ void AliasManager::getAlias(QAlias *aliases)
         in.flush();
     }
     file.close();
-    delete config;
 }
 
 /**
@@ -104,11 +107,14 @@ void AliasManager::getAlias(QAlias *aliases)
  */
 void AliasManager::saveAlias()
 {
-    QSettings *config = new QSettings("conf.ini", QSettings::IniFormat);
-    QString filePath = config->value("ServerManager/directory","").toString()+"/conf/alias.conf";
+#ifdef Q_OS_WIN32
+    QString filePath = configIni->value("ServerManager/directory","").toString()+"/conf/alias.conf";
+#elif defined(Q_OS_LINUX)
+    QString filePath = "/etc/apache2/mods-enabled/mAlias.conf";
+#endif
     QFile file(filePath);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        showTip("警告","打开文件失败");
+        showTip("警告","打开Alias文件失败");
     }
     else{
         QTextStream out(&file);
@@ -124,7 +130,7 @@ void AliasManager::saveAlias()
             line2 = "<Directory \""+it.value()+"\">\n";
             all = line1+line2+line3+line4+line5+line6;
 #ifdef DEBUG
-            mLog(all);
+            mDebug(all);
 #endif
             out<<all;
             it++;
@@ -132,7 +138,6 @@ void AliasManager::saveAlias()
         out.flush();
     }
     file.close();
-    delete config;
 }
 
 /**

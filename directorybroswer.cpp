@@ -105,7 +105,7 @@ void DirectoryBroswer::refresh(QNetworkReply *reply){
      else
      {
         showTip("提示","连接服务器异常\n"+reply->errorString());
-        mLog(reply->errorString());
+        mDebug(reply->errorString());
      }
 }
 

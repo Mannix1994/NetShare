@@ -20,12 +20,10 @@ IDManager::~IDManager()
  * @brief IDManager::initialize 初始化操作
  */
 void IDManager::initialize(){
+    Base::initialize();
     setWindowTitle("ID管理");
     //设置剪贴板
     cboard = QApplication::clipboard();
-
-    //读取本机ID
-    configIni = new QSettings("conf.ini", QSettings::IniFormat);
 
     //设置UDP服务器
     udpSocket = new QUdpSocket();
@@ -55,21 +53,23 @@ QString IDManager::getServerID()
  * @brief IDManager::getIP 刷新IP
  */
 void IDManager::getIP(){
+#ifdef Q_OS_WIN32
     QString localHostName = QHostInfo::localHostName();
     QHostInfo info = QHostInfo::fromName(localHostName);
-    foreach(QHostAddress host,info.addresses()){
+    QList<QHostAddress> list = info.addresses();
+#elif defined(Q_OS_LINUX)
+    QList<QHostAddress> list = QNetworkInterface::allAddresses();
+#endif
+    foreach(QHostAddress host, list){
         QString ip = host.toString();
-        if(host.protocol() == QAbstractSocket::IPv4Protocol && ip.mid(0,3)!="169"){
+        if(host.protocol() == QAbstractSocket::IPv4Protocol && ip.mid(0,3)!="169" && ip.mid(0,3)!="127"){
             ui->cbIP->addItem(ip);
         }
     }
     //检查是否只有一个IP且只为"127.0.0.1"，若是则说明电脑未联网
     int count = ui->cbIP->count();
-    if(count==1 && ui->cbIP->currentText()=="127.0.0.1"){
+    if(count == 0){
         showWarning("提示","电脑尚未联网哦亲!  ");
-    }
-    else if(count == 0){
-        showWarning("提示","电脑尚未联网哦亲！ ");
     }
 }
 
@@ -156,7 +156,7 @@ void IDManager::readPendingDatagrams(){
             return;
         }
         #ifdef DEBUG
-            mLog(str+" "+host.toString());
+            mDebug(str+" "+host.toString());
         #endif
         if(!hasIP(host.toString())){ //如果不是是本机的IP，做回复
             if(list.at(0) == "CONFIRM"){
@@ -221,7 +221,7 @@ void IDManager::closeEvent(QCloseEvent *event){
  */
 void IDManager::on_pbCopyID_clicked()
 {
-    cboard->setText(ui->cbIP->currentText());
+    cboard->setText(ui->leID->text());
     showTip("提示","复制成功");
 }
 
