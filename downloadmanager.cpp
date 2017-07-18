@@ -95,7 +95,6 @@ void DownloadManager::download()
         if(!dir.exists(directory))
             dir.mkpath(directory);
         QString filepath = directory+filename;
-        mDebug(directory);
         if(QFile::exists(filepath))
         {
             bool tag = question("提示","该文件已存在，是否继续下载？\n(下载的文件将被重命名)");

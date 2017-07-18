@@ -267,8 +267,7 @@ bool ServerManager::isHostAccessible(QString host)
 {
     QTcpSocket *s = new QTcpSocket(this);
     s->connectToHost(host,886);
-    bool accessible = s->waitForConnected(1000);
-    mDebug(accessible);
-    delete s;
+    bool accessible = s->waitForConnected(500);
+    s->deleteLater();
     return accessible;
 }

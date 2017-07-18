@@ -29,9 +29,8 @@ void ApplicationManager::init()
     config->setValue("IDManager/id",QString::number(id));
 #ifdef Q_OS_WIN32
     //修改配置文件httpd.conf
-    QString backuppath = path+"/conf/httpd_backup.conf";
-    QString httpdconfPath = path+"/conf/httpd.conf";
-    mDebug(backuppath);
+    QString backuppath = serverPath+"/conf/httpd_backup.conf";
+    QString httpdconfPath = serverPath+"/conf/httpd.conf";
     if(QFile::exists(backuppath)){
         QFile file(httpdconfPath),backup(backuppath);
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -52,7 +51,7 @@ void ApplicationManager::init()
         while(!in.atEnd()){
             text = in.readLine()+"\n";
             if(text.contains("Define SRVROOT")){ //只修改"Define SRVROOT"一行
-                text = "Define SRVROOT \""+path+"\"\n";
+                text = "Define SRVROOT \""+serverPath+"\"\n";
                 mDebug(text);
             }
             out<<text;
@@ -114,7 +113,7 @@ void ApplicationManager::installService(){
         QString data = gbk->toUnicode(bytes);
         mDebug(data);
     }
-    delete p;
+    p->deleteLater();
 #endif
 }
 
@@ -135,6 +134,6 @@ void ApplicationManager::uninstallService(){
         QString data = gbk->toUnicode(bytes);
         mDebug(data);
     }
-    delete p;
+    p->deleteLater();
 #endif
 }

@@ -9,5 +9,6 @@ sudo vim /etc/apache2/ports.conf　
 sudo vim etc/apache2/mods-enabled/alias.conf
 在</IfModule>之前加入一行Include "/etc/apache2/mods-enabled/mAlias.conf"
 4、将源代码文件夹\Res中的mAlias.conf复制到/etc/apache2/mods-enabled/
-5、重启服务器，在浏览器中输入127.0.0.1:886/test，观察是否能打开，若能打开，配置到此完成
+5、sudo chmod 777 /etc/apache2/mods-enabled/mAlias.conf
+6、重启服务器，在浏览器中输入127.0.0.1:886/test，观察是否能打开，若能打开，配置到此完成
 

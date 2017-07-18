@@ -102,7 +102,6 @@ void MainWidget::readPendingDatagrams()
         quint16 senderPort;
         udpSocket->readDatagram(bytes.data(),bytes.size(),&sender,&senderPort);
         QString str = QString::fromUtf8(bytes);
-        mDebug(str);
         QHostAddress host(QHostAddress(sender.toIPv4Address()));
         QStringList list = str.split(":");
         if(list.count() == 0){

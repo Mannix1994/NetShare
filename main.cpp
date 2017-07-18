@@ -1,4 +1,4 @@
-//#define LOG //是否将调试日志记录到文件
+#define LOG //是否将调试日志记录到文件
 
 #include "mainwidget.h"
 #include <QApplication>
